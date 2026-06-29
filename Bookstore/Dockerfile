@@ -26,6 +26,18 @@ ARG BUILD_CONFIGURATION=Release
 WORKDIR /src
 RUN dotnet test "Bookstore.sln" -c $BUILD_CONFIGURATION --logger "trx;LogFileName=test-results.trx"
 
+FROM build AS analysis-deps
+# Global tools commonly used in .NET static analysis workflows.
+RUN dotnet tool install --global dotnet-format
+RUN dotnet tool install --global dotnet-sonarscanner
+ENV PATH="$PATH:/root/.dotnet/tools"
+
+FROM analysis-deps AS analyze
+ARG BUILD_CONFIGURATION=Release
+WORKDIR /src
+RUN dotnet format "Bookstore.sln" --verify-no-changes
+RUN dotnet build "Bookstore.sln" -c $BUILD_CONFIGURATION -warnaserror
+
 FROM base AS final
 WORKDIR /app
 COPY --from=publish /app/publish .
