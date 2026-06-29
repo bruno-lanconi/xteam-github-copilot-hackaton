@@ -21,20 +21,15 @@ test:
 static-analysis:
 	$(DOCKER) build \
 		--file $(DOCKERFILE) \
-		--target static-analysis \
+		--target analyze \
 		--build-arg BUILD_CONFIGURATION=$(BUILD_CONFIGURATION) \
 		.
 
 lint:
 	$(DOCKER) build \
 		--file $(DOCKERFILE) \
-		--target lint \
-		--build-arg BUILD_CONFIGURATION=$(BUILD_CONFIGURATION) \
-		.
-
-analyze:
-	$(DOCKER) build \
-		--file $(DOCKERFILE) \
 		--target analyze \
 		--build-arg BUILD_CONFIGURATION=$(BUILD_CONFIGURATION) \
 		.
+
+analyze: static-analysis
