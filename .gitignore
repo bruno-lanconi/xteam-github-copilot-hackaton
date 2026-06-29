@@ -777,3 +777,4 @@ ehthumbs_vista.db
 .dotnet/
 .local/
 .nuget/
+.specify/
