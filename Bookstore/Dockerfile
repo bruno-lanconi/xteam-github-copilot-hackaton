@@ -30,12 +30,14 @@ FROM build AS analysis-deps
 # Global tools commonly used in .NET static analysis workflows.
 RUN dotnet tool install --global dotnet-format
 RUN dotnet tool install --global dotnet-sonarscanner
+RUN dotnet tool install --global roslynator.dotnet.cli
 ENV PATH="$PATH:/root/.dotnet/tools"
 
 FROM analysis-deps AS analyze
 ARG BUILD_CONFIGURATION=Release
 WORKDIR /src
 RUN dotnet format "Bookstore.sln" --verify-no-changes
+RUN roslynator analyze "Bookstore.sln"
 RUN dotnet build "Bookstore.sln" -c $BUILD_CONFIGURATION -warnaserror
 
 FROM base AS final
