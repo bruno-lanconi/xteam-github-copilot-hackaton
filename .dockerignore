@@ -1,0 +1,24 @@
+# Source control and metadata
+.git/
+.gitignore
+
+# Build output and test artifacts
+**/bin/
+**/obj/
+**/TestResults/
+
+# Local tooling and editor state
+.vscode/
+.idea/
+
+# Environment and logs
+.env*
+*.log*
+
+# Docker definitions (not needed in image context)
+Dockerfile*
+.dockerignore
+
+# Dependency and coverage folders
+node_modules/
+coverage/
